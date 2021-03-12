@@ -1,0 +1,38 @@
+#include<stdio.h>
+#include<conio.h>
+ void main (void)
+ {
+ clrscr();
+ char b;
+ int a;
+ float f;
+ printf("\n enter any char : ");
+ scanf("%c",&b);
+ printf("%c\n",b);
+
+ printf("\n enter any num: ");
+ scanf("%d",&a);
+ printf(" %d\n",a);
+
+ printf("enter any float");
+ scanf("%f",&f);
+ printf("%f",f);
+
+ getch();
+ }
+  /*
+  #include <conio.h>
+  #include <stdio.h>
+
+
+
+ void main (void)
+ {
+ clrscr();
+ float a;
+ printf("enter a char\n");
+ scanf("%f",&a);
+ printf("%f",a);
+ getch();
+ }
+ */

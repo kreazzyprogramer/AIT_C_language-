@@ -1,0 +1,221 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+typedef struct node{
+    char flight[6];
+    int date;
+    char name[40];
+    int seat;
+    struct node *next;
+    //  struct node *prev;
+};
+int May[30][8];
+struct node *plane;
+ 
+int Book(int day, char name[40]);  //add new flight reservation
+int Cancel(char name[40], int day);  //cancel a current flight reservation
+int Confirm(char name[40], int day);  //confirm that a flight reservation exists
+void PrintList(int day);  //print the current list of passengers
+ 
+int main(void){
+    int x =0, y=0, action=0, day=0;
+    char userselection[30], name[40], date;
+    char filename[30];
+    FILE *fp;
+    printf("Please enter the filename containing passenger information:  \n");
+    scanf("%s", filename);
+    fp = fopen(filename, "r");
+    //Check to see if file exists
+    if(fp == NULL){ 
+        printf("\n\nError Opening File\n");
+        return 0;
+    }
+    for(x=1;x<32;x++){
+        for(y=0;y<8;y++){
+            May[x][y] = y+1;
+        }
+    }
+     
+    fgets(userselection,30,fp);
+    action = userselection[0];
+    while(action != '6'){
+        date = userselection[7];
+        day = (int)(date - '0');
+        y=9;
+        for(x=0; x<20;x++){
+            name[x]=userselection[y];
+            y++;
+        }
+        //if the file being read is a 1, add that person to the flight list
+        if(action == '1'){
+            Book(day, name);
+        }
+        //if the file being read is a 2, cancel that person's flight reservation
+        if(action == '2'){
+            Cancel(name, day);
+        }
+        //if the file being read is a 3, confirm that that person is on the list
+        if(action == '3'){
+            Confirm(name, day);
+        }
+        //if the file being read is a 4, print the current list of passengers
+        if(action == '4'){
+            PrintList(day);
+        }
+        //if the file being read is a 5, print the seating plan for the flight
+        if(action == '5'){
+            printf("The seating plan for flight ZM101 on May %d is:\n", day);
+            printf("[ %d %d %d %d %d %d %d %d ]\n", May[day][0],May[day][1],May[day][2],May[day][3],May[day][4],May[day][5],May[day][6],May[day][7]);
+        }
+        //if the file being read is a 6, quit the program
+        if(action == '6'){
+            printf("Quit the program");
+            printf("\n");
+            return 0;
+        }
+        //move to the next line in the file and read it
+        fgets(userselection,30,fp);
+        action = userselection[0];
+        printf("\n");
+    }
+    return 0;
+}
+ 
+//add a new reservation to the flight
+int Book(int day, char name[30]){
+    int sum=0,x;
+    char ZM101[6] = {'Z','M','1','0','1'};
+    struct node * pNew=(struct node *) (malloc(sizeof(struct node)));
+    for(x=0;x<8;x++){
+        sum+=May[day][x];
+    }
+    if(sum == 0){
+        printf("Sorry all seats are booked for ZM101 May %d\n", day);
+        return 0;
+    }
+    pNew->date =  day ;
+    strcpy(pNew->flight, ZM101);
+    strcpy(pNew->name, name);
+ 
+    //assigns seat number 1 to the passenger if that seat is empty
+    if(May[day][0] != 0){
+        pNew->seat= May[day][0];
+        May[day][0] = 0;
+    }
+    //else assigns seat number 2 to the passenger if that seat is empty
+    else if(May[day][1] != 0){
+        pNew->seat= May[day][1];
+        May[day][1] = 0;
+    }
+    //else assigns seat number 3 to the passenger if that seat is empty
+    else if(May[day][2] != 0){
+        pNew->seat= May[day][2];
+        May[day][2] = 0;
+    }
+    //else assigns seat number 4 to the passenger if that seat is empty
+    else if(May[day][3] != 0){
+        pNew->seat= May[day][3];
+        May[day][3] =0;
+    }
+    //else assigns seat number 5 to the passenger if that seat is empty
+    else if(May[day][4] != 0){
+        pNew->seat= May[day][4];
+        May[day][4] =0;
+    }
+    //else assigns seat number 6 to the passenger if that seat is empty
+    else if(May[day][5] != 0){
+        pNew->seat= May[day][5];
+        May[day][5] =0;
+    }
+    //else assigns seat number 7 to the passenger if that seat is empty
+    else if(May[day][6] != 0){
+        pNew->seat= May[day][6];
+        May[day][6]=0;
+    }
+    //else assigns seat number 8 to the passenger if that seat is empty
+    else if(May[day][7] != 0){
+        pNew->seat= May[day][7];
+        May[day][7] =0;
+    }
+ 
+    pNew->next = NULL;
+    //if the list is empty
+    if(plane== NULL){
+        plane  =  pNew;
+    }
+    else
+    //assign it the next open value in the list
+    {
+        pNew->next  = plane->next;
+        plane->next = pNew;
+    }
+    printf("%s  Booked on ZM101 on May %d\n",name, day);
+    return 1;
+}
+ 
+ 
+//Free's the seat number and reassigns, but doesn't remove the passenger...
+int Cancel(char name[40], int day){
+    struct node* current = plane;
+    if(current->date == day){
+        //if the date is found see if the name is the same
+        if(strcmp(name, current->name) == 0){
+            //put the seat number back into the array
+            May[day][current->seat - 1] = current->seat;
+            current = plane;
+            plane = current->next;
+            current = NULL;
+            printf("Booking cancelled for %s for flight ZM101 May %d\n", name, day);
+            return 0;
+        }
+    }
+    while(current->next != NULL){
+        //Check if its the correct date
+        if(current->next->date == day){
+            //if the date is found see if the name is the same
+            if(strcmp(name, current->next->name) == 0){
+                //put the seat number back into the array
+                May[day][current->next->seat - 1] = current->next->seat;
+                current->next = plane->next;
+                plane->next = current->next->next;
+                current->next = NULL;
+                printf("Booking cancelled for %s for flight ZM101 May %d\n", name, day);
+                return 0;
+            }
+        }
+        current = current->next;
+    }
+    printf("No flight reservation to cancel for %s on ZM101 on May %d\n", name, day);
+    return 1;
+}
+ 
+//confirm that the person has a reservation
+int Confirm(char name[40], int day){
+    struct node* current = plane;
+    while(current != NULL){
+        if(current->date == day){
+            if(strcmp(name, current->name) == 0){
+                printf("Yes, Booking confirmed for %s for flight ZM101 on May %d\n", name, day);
+                return 0;
+            }
+        }
+        current = current->next;
+    }
+    printf("Sorry, no booking found for %s for flight ZM101 on May %d\n", name, day);
+    return 0;
+}
+ 
+//Print the current list of passengers
+void PrintList(int day){
+    struct node* current = plane;
+    printf("\nPassenger List for ZM101 on May %d:\n",day);
+    while (current != NULL){
+        if(current->date == day){
+            printf("%s", current->name);
+            printf("%d", current->seat);
+            printf("\n");
+        }
+        current = current->next;
+    }
+    printf("\n");
+}

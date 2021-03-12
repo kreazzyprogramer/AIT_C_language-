@@ -1,0 +1,324 @@
+//THIS PROGRAM IS MADE BY #HANIFI.
+
+//IN THIS YOU CAN ADD BOOKS,VIEW ALL BOOKS,VIEW BY SPECIFIC AUTHOR NAME
+//AND YOU CAN VIEW TOTAL NUMBER OF BOOKS.
+//THIS PROGRAM IS RESTRICTED TO ADD ONLY [3] NUMBER OF BOOKS.BUT YOU CAN
+//CHANGE THE RESTRUCTION TO YOUR DESIRE BY CHANGING THE COUNT VALUE IN ADD
+//FUNCTION.
+//HOPE YOU LIKE IT :)
+
+
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<dos.h>
+#define y 5
+#define x 20
+struct library
+{
+int id_no;
+char book_title[100];
+char author[100];
+int cost;
+}b[200];
+
+void menu();
+void add_book();
+void disp_book();
+void search();
+void count_book();
+void Password();
+
+int count;
+char password[10]={"12345"};
+
+
+void main (void)
+{
+clrscr();
+   Password();
+      getch();
+ menu();
+}
+void menu()
+{
+int ch;
+
+
+clrscr();
+window(1,1,80,25);
+textbackground(BLUE);
+clrscr();
+
+while(1)
+{
+textcolor(15);
+clrscr();
+   gotoxy(20,3);
+    printf("\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2 MAIN MENU");
+    printf(" \xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2");
+    gotoxy(20,5);
+    printf("\xDB\xDB\xDB\xDB\xB2 1. ADD BOOK  ");
+    gotoxy(20,7);
+    printf("\xDB\xDB\xDB\xDB\xB2 2. DISPLAY BOOKS IN LIBRARY");
+    gotoxy(20,9);
+    printf("\xDB\xDB\xDB\xDB\xB2 3. SEARCH BOOKS");
+    gotoxy(20,11);
+    printf("\xDB\xDB\xDB\xDB\xB2 4. TOTLA BOOKS IN LIBRARY");
+    gotoxy(20,13);
+    printf("\xDB\xDB\xDB\xDB\xB2 5. CLOSE APPLICATION");
+    gotoxy(20,15);
+    printf("------------------------------------------");
+    gotoxy(20,20);
+    gotoxy(20,21);
+    printf("Enter your choice:");
+    scanf("%d",&ch);
+textcolor(15);
+switch(ch)
+{
+case 1:
+clrscr();
+add_book();     //FUNCTION CALLING
+getch();
+break;
+case 2:
+clrscr();
+disp_book();    //FUNCTION CALLING
+getch();
+break;
+case 3:
+clrscr();
+search();    //FUNCTION CALLING
+getch();
+break;
+case 4:
+clrscr();
+count_book();  //FUNCTION CALLING
+getch();
+break;
+case 5:
+clrscr();
+gotoxy(25,4);
+    textcolor(14);
+    cprintf("CLOSING APPLICATION...");
+    delay(1000);
+    gotoxy(25,6);
+    textcolor(14);
+    cprintf("THANK YOU FOR USING.");
+    gotoxy(25,8);
+    delay(700);
+    cprintf("HOPE YOU FEEL HALPFULL :)");
+    gotoxy(25,10);
+    delay(1000);
+    textcolor(7);
+    cprintf("HAVE A NICE DAY.");
+    gotoxy(25,12);
+    delay(2000);
+    textcolor(15);
+    cprintf("DON'T TRY TO COPY ME....");
+    gotoxy(25,14);
+    delay(3000);
+    textcolor(15);
+    cprintf("REGARDS #HANIFI");
+    gotoxy(25,20);
+    delay(3000);
+    textcolor(15);
+    cprintf("COPY RIGHT 2017 HANIFI");
+
+    getch();
+    exit(1);
+
+getch();
+exit(0);
+}
+}
+}
+
+	//END OF MENU
+//-----------------------------------
+
+//ADD BOOK FUNCTION STATEMENT
+
+void add_book()
+{
+if(count==3)    //CHANGE THIS [3] IF YOU WANT TO CHANGE LIMIT
+{
+gotoxy(7,11);
+textcolor(15+BLINK);
+cprintf("YOU CAN ONLY ADD 3 BOOKS [ OVER LIMIT ]");
+return;
+}
+gotoxy(x,y);
+textcolor(RED);
+cprintf(" ENTER DETAILS OF BOOK ");
+textcolor(15);
+printf("\n ID.NO OF BOOK: ");
+scanf("%d",&b[count].id_no);
+fflush(stdin);
+printf("\n PELASE ENTER BOOK TITLE:");
+gets(b[count].book_title);
+fflush(stdin);
+printf("\n PLEASE ENTER THE NAME OF AUTHOR:");
+gets(b[count].author);
+fflush(stdin);
+printf("\n WHAT IS THE COST OF BOOK:");
+scanf("%d",&b[count].cost);
+
+printf("DATA ENTERED SUCCESSFULLY");
+count++;
+}
+
+     //END OF ADD BOOK
+//***********************
+     //DISPLAY BOOK FUNCTION STATEMENT STARTS
+
+
+void disp_book()
+{
+int i;
+gotoxy(x,y);
+textcolor(RED);
+cprintf(" NOW DISPLAYING DETAIL OF BOOKS IN LIBRARY");
+for(i=0;i<count;i++)
+{
+printf("\n BOOK ID # %d",b[i].id_no);
+printf("\n BOOK TITLE %s",b[i].book_title);
+printf("\n NAME OF AUTHOR %s",b[i].author);
+printf("\n BOOK COST %d",b[i].cost);
+printf("\n\n");
+}
+}
+
+
+      //END OF DISPLAY
+//*********************
+    //SEARCH BOOK BY AUTHOR NAME OR ID FUNCTION STATEMENT STARTS
+
+void search()
+{
+clrscr();
+int i,cnt=0,id,cho;
+char name[20];
+
+gotoxy(x,y);
+printf("PRESS [1] TO SHARCH BY AUTHOR NAME\n");
+gotoxy(20,7);
+printf("PRESS [2] TO SEARCH BY ID.NO \n");
+scanf("%d",&cho);
+if (cho==1)
+{
+clrscr();
+gotoxy(x,y);
+printf("\n WHAT IS THE NAME OF AUTHOR YOU WANT TO SEARCH: ");
+scanf("%s",&name);
+for(i=0;i<count;i++)
+{
+if(strcmp(name,b[i].author)==0)
+{
+clrscr();
+cnt++;
+printf("\n BOOK ID # %d",b[i].id_no);
+printf("\n BOOK TITLE %s",b[i].book_title);
+printf("\n NAME OF AUTHOR %s",b[i].author);
+printf("\n BOOK COST %d",b[i].cost);
+printf("\n\n");
+
+}
+}
+}
+
+
+
+if(cho==2)
+{
+clrscr();
+gotoxy(x,y);
+printf("PLESE PROVIDE ID# OF THE DESIRE BOOK: ");
+scanf("%d",&id);
+for(i=0;i<count;i++)
+{
+if(id==b[i].id_no)
+{
+clrscr();
+cnt++;
+printf("\n BOOK ID # %d",b[i].id_no);
+printf("\n BOOK TITLE %s",b[i].book_title);
+printf("\n NAME OF AUTHOR %s",b[i].author);
+printf("\n BOOK COST %d",b[i].cost);
+printf("\n\n");
+}
+}
+}
+if(cnt==0)
+{
+printf("\n !!! NO BOOK FOUND !!! \n");
+}
+}
+//*******************************
+void count_book()
+{
+gotoxy(x,y);
+printf(" TOTAL NUMBER OF BOOK IN LIBERARY IS: %d",count);
+}
+
+
+void Password(void) //for password option
+{
+
+   system("cls");
+   char d[35]="PASSWORD PROTECTED APPLICATION";
+   char ch,pass[100];
+   int i=0,j;
+   //textbackground(WHITE);
+   //textcolor(RED);
+    gotoxy(5,6);
+    for(j=0;j<20;j++)
+    {
+    delay(70);
+    printf("*");
+    }
+    for(j=0;j<30;j++)
+   {
+   delay(100);
+   printf("%c",d[j]);
+   }
+   for(j=0;j<20;j++)
+   {
+   delay(70);
+   printf("*");
+   }
+   //gotoxy(10,10);
+   gotoxy(15,10);
+   printf("Enter Password:");
+
+   while(ch!=13)
+   {
+    ch=getch();
+
+    if(ch!=13 && ch!=8){
+    putch('*');
+    pass[i] = ch;
+    i++;
+    }
+   }
+   pass[i] = '\0';
+   if(strcmp(pass,password)==0)
+   {
+
+    gotoxy(15,12);
+    //textcolor(BLINK);
+    printf("Password match");
+    gotoxy(17,13);
+    printf("Press any key to countinue.....");
+    getch();
+    menu();
+   }
+   else
+   {
+     gotoxy(15,16);
+     printf("\aWarning!! Incorrect Password");
+     getch();
+     Password();
+   }
+}

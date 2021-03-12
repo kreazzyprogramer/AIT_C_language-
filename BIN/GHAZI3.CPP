@@ -1,0 +1,14 @@
+#include<stdio.h>
+#include<conio.h>
+void main (void)
+{
+
+clrscr();
+
+int a;
+for(a=1;a<=20;a++)
+{
+printf("%d ",a);
+}
+getch();
+}
